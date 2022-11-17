@@ -67,13 +67,9 @@ export const Consumer = Context.Consumer
  */
 
 export default function withContext(Component, props = []) {
-  // return function ContextComponent(props) {
   return (
     <Context.Consumer>
       {context => <Component {...props} context={context} />}
-      {/* {context => <Component context={context} />} */}
     </Context.Consumer>
-  );
-  // }
+  )
 }
-

@@ -17,7 +17,8 @@ let CourseDetail = function (props) {
         data.getCourse(id)
             .then(res => {
                 setCourse(res)
-                if (authUser !== null) {
+                console.log(res)
+                if (authUser !== null && res.User.emailAddress === authUser.emailAddress) {
                     setAuthButtons((
                         <span>
                             <a className="button" href={`/courses/${id}/update`}>Update Course</a>
@@ -27,9 +28,6 @@ let CourseDetail = function (props) {
                 }
             })
     }, [])
-    // useEffect(() => {
-    //     console.log("COURSE DETAIL 19:", course)
-    // }, [course])
 
     const handleDelete = function () {
         let data = new Data()

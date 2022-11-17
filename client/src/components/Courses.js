@@ -12,10 +12,6 @@ let Courses = function () {
             })
     }, [])
 
-    // useEffect(() => {
-    //     console.log(courses)
-    // }, [courses])
-
     return (
         <main>
             <div className="wrap main--grid">
@@ -35,7 +31,7 @@ let Courses = function () {
                     </span>
                 </a>
             </div>
-        </main >
+        </main>
     )
 }
 

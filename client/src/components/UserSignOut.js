@@ -1,22 +1,19 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
-import Data from "../Data"
+import { Navigate } from "react-router-dom"
 
 
 let UserSignOut = function (props) {
-    let { context } = props
-    let navigate = useNavigate()
+    // const navigate = useNavigate()
+    // useEffect(() => {
+    // console.log(props.context)
+    // props.context.actions.signOut()
+    // navigate('/')
+    // }, [])
 
-    context.actions.signOut()
-        .then(() => {
-            navigate('/')
-        })
-        .catch(console.log)
     return (
-        <main>
-            <div>
-            </div>
-        </main>
+        // <div onClick={props.context.actions.signOut}>
+        <Navigate to='/' />
+        // </div>
     )
 }
 

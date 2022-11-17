@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
-import context from '../Context';
 
-let Header = function () {
+const Header = function (props) {
     let [buttons, setButtons] = useState([])
+    let { context } = props
+    console.log(context)
     const authUser = context.authenticatedUser
     console.log("Header 6", authUser)
     useEffect(() => {
-        if (authUser !== null) {
+        if (!authUser) {
             console.log("Header 10", buttons)
             setButtons((
                 <span>
@@ -16,9 +17,8 @@ let Header = function () {
             ))
             console.log("Header 17", buttons)
         } else {
-
             setButtons((
-                <li><a href="/signout">Sign Out</a></li>
+                <li><a href="/signout" onClick={context.actions.signOut}>Sign Out</a></li>
             ))
         }
     }, [])

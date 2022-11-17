@@ -18,7 +18,7 @@ import PrivateRoute from "./PrivateRoute"
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      {withContext(Header)}
       <Routes>
         <Route path="/" element={withContext(Courses)} />
         <Route path="/signin" element={withContext(UserSignIn)} />
@@ -28,7 +28,7 @@ function App() {
           <Route path="/courses/create" element={withContext(CreateCourse)} />
           <Route path="/courses/:id/update" element={withContext(UpdateCourse)} />
         </Route>
-        <Route path="/signout" element={<UserSignOut />} />
+        <Route path="/signout" element={withContext(UserSignOut)} />
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="/error" element={<UnhandledError />} />
         <Route path="*" element={<NotFound />} />
