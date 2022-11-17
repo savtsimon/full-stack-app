@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import { Link } from 'react-router-dom';
-import Data from "../Data"
 
 const UserSignIn = function (props) {
     const { context } = props
@@ -9,11 +8,11 @@ const UserSignIn = function (props) {
     const email = useRef()
     const password = useRef()
 
-    let handleCancel = function (e) {
+    const handleCancel = function (e) {
         e.preventDefault()
         navigate("/")
     }
-    let handleSubmit = function (e) {
+    const handleSubmit = function (e) {
         e.preventDefault()
         // const user = { emailAddress: email.current.value, password: password.current.value }
         console.log("UserSignIn 19: ", email, password)
@@ -25,8 +24,6 @@ const UserSignIn = function (props) {
                 console.log(err)
                 navigate('/error')
             })
-        email.current.value = ""
-        password.current.value = ""
     }
     return (
         <main>

@@ -1,67 +1,63 @@
 import React, { useRef, useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import Data from "../Data"
 
 
 let UpdateCourse = function (props) {
     const navigate = useNavigate()
     let params = useParams()
     let id = params.id
-    let data = new Data()
 
     let title = useRef()
     let description = useRef()
     let estimatedTime = useRef()
     let materialsNeeded = useRef()
 
-    let [errors, setErrors] = useState([])
-    let valErrs = ""
-
+    const { context } = props
+    const [errors, setErrors] = useState([])
+    const [valErrors, setValErrors] = useState([])
 
     useEffect(() => {
-        data.getCourse(id)
+        context.data.getCourse(id)
             .then(res => {
+                console.log("UPDATE 22", res)
                 title.current.value = res.title
                 description.current.value = res.description
                 estimatedTime.current.value = res.estimatedTime
                 materialsNeeded.current.value = res.materialsNeeded
+                // res.userId
             })
     }, [])
 
-    const { context } = props
 
     const handleSubmit = function (e) {
         e.preventDefault()
-        data.updateCourse({})
         // Update course
         const course = { title: title.current.value, description: description.current.value, estimatedTime: estimatedTime.current.value, materialsNeeded: materialsNeeded.current.value }
         console.log(course)
-        context.data.updateCourse(course)
-            .then(errors => {
-                if (errors.length) {
-                    setErrors({ errors });
+        context.data.updateCourse(course, id)
+            .then(res => {
+                if (res.length !== 0) {
+                    console.log("update course 40", res)
+                    setValErrors(<div className="validation--errors">
+                        <h3>Validation Errors</h3>
+                        <ul>
+                            {res.map((error, i) => <li key={i}>{error}</li>)}
+                        </ul>
+                    </div>)
+                } else {
+                    navigate(`/courses/${id}`)
                 }
             })
             .catch((err) => {
                 console.log(err);
                 navigate('/error');
             });
-        title.current.value = ""
-        description.current.value = ""
-        estimatedTime.current.value = ""
-        materialsNeeded.current.value = ""
+        // title.current.value = ""
+        // description.current.value = ""
+        // estimatedTime.current.value = ""
+        // materialsNeeded.current.value = ""
     }
-    if (errors.length) {
-        valErrs = <div className="validation--errors">
-            <h3>Validation Errors</h3>
-            <ul>
-                {errors.map(error => {
-                    <li>{error}</li>
-                })}
-            </ul>
-        </div>
-    }
-    // USE REQ.BODY TO RE FILL IN THE FORM IF NOT VALIDATED PROPERLY
+
     const handleCancel = function (e) {
         e.preventDefault()
         navigate(`/courses/${id}`)
@@ -70,6 +66,7 @@ let UpdateCourse = function (props) {
         <main>
             <div className="wrap">
                 <h2>Update Course</h2>
+                {valErrors}
                 <form onSubmit={handleSubmit}>
                     <div className="main--flex">
                         <div>

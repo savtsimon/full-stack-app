@@ -59,6 +59,7 @@ router.get("/users", authenticateUser, asyncHandler((req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         emailAddress: user.emailAddress,
+        id: user.id
     })
 }))
 
@@ -124,7 +125,7 @@ router.post("/courses", authenticateUser, asyncHandler(async (req, res) => {
             const errors = error.errors.map(error => error.message)
             res.status(400).json({ errors })
         } else {
-            throw error;
+            throw error
         }
     }
 }))

@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from "react"
 
 const Header = function (props) {
-    let [buttons, setButtons] = useState([])
+    const [buttons, setButtons] = useState([])
     let { context } = props
-    console.log(context)
-    const authUser = context.authenticatedUser
-    console.log("Header 6", authUser)
+
     useEffect(() => {
-        if (!authUser) {
-            console.log("Header 10", buttons)
+        if (!context.authenticatedUser) {
             setButtons((
                 <span>
                     <li><a href="/signup">Sign Up</a></li>
                     <li><a href="/signin">Sign In</a></li>
                 </span>
             ))
-            console.log("Header 17", buttons)
         } else {
             setButtons((
                 <li><a href="/signout" onClick={context.actions.signOut}>Sign Out</a></li>
             ))
         }
-    }, [])
+    }, [context])
 
     return (
         <header>

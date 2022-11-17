@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react"
-import Data from "../Data"
 
 
-let Courses = function () {
+let Courses = function (props) {
     const [courses, setCourses] = useState([])
-    let data = new Data()
+
     useEffect(() => {
-        data.getCourses()
+        props.context.data.getCourses()
             .then(res => {
                 setCourses(res.courses)
             })

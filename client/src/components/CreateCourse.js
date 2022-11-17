@@ -1,27 +1,22 @@
 import React, { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import Data from "../Data"
 
 
 let CreateCourse = function (props) {
     const navigate = useNavigate()
     const { context } = props
-    const authUser = context.authenticatedUser;
-    // console.log(authUser)
-    // if (!authUser) {
-    //     navigate("/signin")
-    // }
     const title = useRef()
     const description = useRef()
     const estimatedTime = useRef()
     const materialsNeeded = useRef()
 
-    let [valErrors, setValErrors] = useState([])
-    let handleCancel = function (e) {
+    const [valErrors, setValErrors] = useState([])
+
+    const handleCancel = function (e) {
         e.preventDefault()
         navigate("/")
     }
-    let handleSubmit = function (e) {
+    const handleSubmit = function (e) {
         e.preventDefault()
         // Create course
         const course = { title: title.current.value, description: description.current.value, estimatedTime: estimatedTime.current.value, materialsNeeded: materialsNeeded.current.value }
@@ -29,7 +24,7 @@ let CreateCourse = function (props) {
         context.data.createCourse(course)
             .then(res => {
                 console.log("create course 27", res)
-                if (res.length) {
+                if (res.length !== 0) {
                     console.log("create course 29", res)
                     setValErrors(<div className="validation--errors">
                         <h3>Validation Errors</h3>
@@ -37,18 +32,20 @@ let CreateCourse = function (props) {
                             {res.map((error, i) => <li key={i}>{error}</li>)}
                         </ul>
                     </div>)
+                } else {
+                    navigate('/');
                 }
             })
-            .catch((err) => {
-                console.log(err);
-                navigate('/error');
+            .catch(err => {
+                console.log("CREATE COURSE 39:", err)
+                navigate('/error')
             });
     }
     return (
         <main>
             <div className="wrap">
                 <h2>Create Course</h2>
-                {/* {valErrors} */}
+                {valErrors}
                 <form onSubmit={handleSubmit}>
                     <div className="main--flex">
                         <div>

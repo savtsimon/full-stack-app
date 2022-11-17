@@ -8,12 +8,11 @@ export class Provider extends Component {
 
   constructor() {
     super()
-    this.data = new Data()
     this.cookie = Cookies.get('authenticatedUser')
-
     this.state = {
       authenticatedUser: this.cookie ? JSON.parse(this.cookie) : null
     }
+    this.data = new Data()
   }
 
   render() {
@@ -36,7 +35,11 @@ export class Provider extends Component {
 
   signIn = async (emailAddress, password) => {
     console.log("SIGN-IN-38: ", emailAddress, password)
-    let creds = { "emailAddress": emailAddress, "password": password }
+    const creds = { "emailAddress": emailAddress, "password": password }
+    const cookieOptions = {
+      "expires": 1
+    }
+    Cookies.set("credentials", JSON.stringify(creds), cookieOptions)
     const user = await this.data.getUser(creds)
     if (user !== null) {
       this.setState(() => {
@@ -44,9 +47,6 @@ export class Provider extends Component {
           "authenticatedUser": user,
         }
       })
-      const cookieOptions = {
-        "expires": 1
-      }
       Cookies.set("authenticatedUser", JSON.stringify(user), cookieOptions)
     }
     return user
@@ -55,6 +55,7 @@ export class Provider extends Component {
   signOut = () => {
     this.setState({ "authenticatedUser": null })
     Cookies.remove("authenticatedUser")
+    Cookies.remove("credentials")
   }
 }
 
