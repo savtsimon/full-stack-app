@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 import Courses from "./components/Courses"
 import CreateCourse from "./components/CreateCourse"
@@ -33,7 +33,7 @@ function App() {
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="/error" element={<UnhandledError />} />
         <Route path="/notfound" element={<NotFound />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/notfound" replace={true} />} />
       </Routes>
     </BrowserRouter>
   )

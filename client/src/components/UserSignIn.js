@@ -1,7 +1,9 @@
 import React, { useRef } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 
 const UserSignIn = function (props) {
+    const location = useLocation()
+    console.log(location.state)
     const { context } = props
     const navigate = useNavigate()
     const email = useRef()
@@ -16,7 +18,11 @@ const UserSignIn = function (props) {
         // Use the signIn method on context to authenticate the user
         context.actions.signIn(email.current.value, password.current.value)
             .then(() => {
-                navigate(-1)
+                if (location?.state?.targetRoute) {
+                    navigate(location.state.targetRoute)
+                } else {
+                    navigate(-1)
+                }
             })
             .catch(() => {
                 navigate('/error')

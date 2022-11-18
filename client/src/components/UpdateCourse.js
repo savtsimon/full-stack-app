@@ -23,10 +23,10 @@ let UpdateCourse = function (props) {
                     navigate("/notfound")
                 } else {
                     // Populate the update form with the existing course information
-                    title.current = res.title
-                    description.current = res.description
-                    estimatedTime.current = res.estimatedTime
-                    materialsNeeded.current = res.materialsNeeded
+                    title.current.value = res.title
+                    description.current.value = res.description
+                    estimatedTime.current.value = res.estimatedTime
+                    materialsNeeded.current.value = res.materialsNeeded
                     if (res.userId !== context.authenticatedUser.id) {
                         navigate("/forbidden")
                     }

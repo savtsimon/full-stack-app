@@ -90,22 +90,28 @@ router.get("/courses", asyncHandler(async (req, res) => {
 
 // Return specific course and associated user data
 router.get("/courses/:id", asyncHandler(async (req, res) => {
-    const course = await Course.findOne({
-        attributes: ["id", "title", "description", "estimatedTime", "materialsNeeded", "userId"],
-        where: {
-            id: parseInt(req.params.id),
-        },
-        include: {
-            model: User,
-            attributes: ["firstName", "lastName", "emailAddress"]
-        }
-    }).catch(error => {
-        res.status(404).end()
-    })
-    if (!course) {
+    console.log("detail", req.params.id)
+    if (!/^\d+$/.test(req.params.id)) {
+        console.log("isinteger", req.params.id)
         res.status(404).end()
     } else {
-        res.json(course)
+        const course = await Course.findOne({
+            attributes: ["id", "title", "description", "estimatedTime", "materialsNeeded", "userId"],
+            where: {
+                id: parseInt(req.params.id),
+            },
+            include: {
+                model: User,
+                attributes: ["firstName", "lastName", "emailAddress"]
+            }
+        }).catch(error => {
+            res.status(404).end()
+        })
+        if (!course) {
+            res.status(404).end()
+        } else {
+            res.json(course)
+        }
     }
 }))
 
