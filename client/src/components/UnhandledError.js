@@ -1,9 +1,7 @@
-// import React, { useState, useEffect } from "react"
-import Data from "../Data"
+import React from "react"
 
 
 let UnhandledError = function () {
-
     return (
         <main>
             <div className="wrap">

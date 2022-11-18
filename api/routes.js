@@ -4,7 +4,6 @@ const express = require('express');
 const auth = require("basic-auth")
 const bcrypt = require("bcrypt")
 const { User, Course } = require('./models');
-const course = require('./models/course');
 
 const router = express.Router();
 
@@ -21,13 +20,10 @@ const asyncHandler = (cb) => {
 const authenticateUser = asyncHandler(async (req, res, next) => {
     let message = ""
     // Get credentials from the authorization header
-    console.log("routes-24: ", req.body, req.headers)
     const creds = auth(req)
-    console.log("routes-26: ", creds)
     // If credentials are available, find corresponding user
     if (creds) {
         const user = await User.findOne({ "where": { "emailAddress": creds.name } })
-        console.log("routes-30: ", user)
         // If user exists, ensure that the authentication credentials match
         if (user) {
             const authenticated = bcrypt.compareSync(creds.pass, user.password)
@@ -103,8 +99,14 @@ router.get("/courses/:id", asyncHandler(async (req, res) => {
             model: User,
             attributes: ["firstName", "lastName", "emailAddress"]
         }
+    }).catch(error => {
+        res.status(404).end()
     })
-    res.json(course)
+    if (!course) {
+        res.status(404).end()
+    } else {
+        res.json(course)
+    }
 }))
 
 // Create a new course

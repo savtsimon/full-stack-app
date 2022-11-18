@@ -5,6 +5,7 @@ const Header = function (props) {
     let { context } = props
 
     useEffect(() => {
+        // Render the correct header items depending on whether there is a user signed in/authenticated
         if (!context.authenticatedUser) {
             setButtons((
                 <span>
@@ -14,7 +15,10 @@ const Header = function (props) {
             ))
         } else {
             setButtons((
-                <li><a href="/signout" onClick={context.actions.signOut}>Sign Out</a></li>
+                <span>
+                    <li>{context.authenticatedUser.firstName}</li>
+                    <li><a href="/signout" onClick={context.actions.signOut}>Sign Out</a></li>
+                </span>
             ))
         }
     }, [context])

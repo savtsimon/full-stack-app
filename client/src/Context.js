@@ -14,7 +14,7 @@ export class Provider extends Component {
     }
     this.data = new Data()
   }
-
+  // Set provider value to all items that need to be accessed via context
   render() {
     const { authenticatedUser } = this.state
     const value = {
@@ -32,14 +32,14 @@ export class Provider extends Component {
     )
   }
 
-
+  // Action to set credentials from a sign in to the cookie
   signIn = async (emailAddress, password) => {
-    console.log("SIGN-IN-38: ", emailAddress, password)
     const creds = { "emailAddress": emailAddress, "password": password }
     const cookieOptions = {
       "expires": 1
     }
     Cookies.set("credentials", JSON.stringify(creds), cookieOptions)
+    // If the user exists in db with the creds, put user in globally accessible context
     const user = await this.data.getUser(creds)
     if (user !== null) {
       this.setState(() => {
@@ -51,7 +51,7 @@ export class Provider extends Component {
     }
     return user
   }
-
+  // Action to remove credentials from cookie and auth state
   signOut = () => {
     this.setState({ "authenticatedUser": null })
     Cookies.remove("authenticatedUser")
@@ -62,9 +62,9 @@ export class Provider extends Component {
 export const Consumer = Context.Consumer
 
 /**
- * A higher-order component that wraps the provided component in a Context Consumer component.
- * @param {class} Component - A React component.
- * @returns {function} A higher-order component.
+ * A higher order component that wraps the provided component in a Context Consumer component
+ * @param {class} Component - A React component
+ * @returns {function} A higher order component
  */
 
 export default function withContext(Component, props = []) {

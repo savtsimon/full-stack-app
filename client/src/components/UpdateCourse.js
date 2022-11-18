@@ -4,28 +4,35 @@ import { useNavigate, useParams } from "react-router-dom"
 
 let UpdateCourse = function (props) {
     const navigate = useNavigate()
-    let params = useParams()
-    let id = params.id
+    const params = useParams()
+    const id = params.id
 
-    let title = useRef()
-    let description = useRef()
-    let estimatedTime = useRef()
-    let materialsNeeded = useRef()
+    const title = useRef()
+    const description = useRef()
+    const estimatedTime = useRef()
+    const materialsNeeded = useRef()
 
     const { context } = props
-    const [errors, setErrors] = useState([])
     const [valErrors, setValErrors] = useState([])
 
     useEffect(() => {
+        // Use the getCourse method on Data class with the course id from req.params to retrieve course info
         context.data.getCourse(id)
             .then(res => {
-                console.log("UPDATE 22", res)
-                title.current.value = res.title
-                description.current.value = res.description
-                estimatedTime.current.value = res.estimatedTime
-                materialsNeeded.current.value = res.materialsNeeded
-                // res.userId
+                if (res.error) {
+                    navigate("/notfound")
+                } else {
+                    // Populate the update form with the existing course information
+                    title.current = res.title
+                    description.current = res.description
+                    estimatedTime.current = res.estimatedTime
+                    materialsNeeded.current = res.materialsNeeded
+                    if (res.userId !== context.authenticatedUser.id) {
+                        navigate("/forbidden")
+                    }
+                }
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -33,11 +40,12 @@ let UpdateCourse = function (props) {
         e.preventDefault()
         // Update course
         const course = { title: title.current.value, description: description.current.value, estimatedTime: estimatedTime.current.value, materialsNeeded: materialsNeeded.current.value }
-        console.log(course)
+        // Use the refs in form inputs to build the course object
+        // Use the updateCourse method on Data class with the course object to update the course in db
         context.data.updateCourse(course, id)
             .then(res => {
+                // If validation errors are returned, render the errors onto the page
                 if (res.length !== 0) {
-                    console.log("update course 40", res)
                     setValErrors(<div className="validation--errors">
                         <h3>Validation Errors</h3>
                         <ul>
@@ -49,13 +57,8 @@ let UpdateCourse = function (props) {
                 }
             })
             .catch((err) => {
-                console.log(err);
-                navigate('/error');
-            });
-        // title.current.value = ""
-        // description.current.value = ""
-        // estimatedTime.current.value = ""
-        // materialsNeeded.current.value = ""
+                navigate('/error')
+            })
     }
 
     const handleCancel = function (e) {

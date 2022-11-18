@@ -1,35 +1,43 @@
 import React, { useState, useEffect } from "react"
-import ReactMarkdown from 'react-markdown'
-import { Navigate, useParams, useNavigate } from "react-router-dom"
+import ReactMarkdown from "react-markdown"
+import { useParams, useNavigate } from "react-router-dom"
 
 
 const CourseDetail = function (props) {
     const navigate = useNavigate()
     const { context } = props
-    const authUser = context.authenticatedUser;
+    const authUser = context.authenticatedUser
     const [course, setCourse] = useState({})
     const [authButtons, setAuthButtons] = useState("")
     const [name, setName] = useState("")
-    let params = useParams()
-    let id = params.id
+    const params = useParams()
+    const id = params.id
 
     useEffect(() => {
+        // Use the getCourse method on Data class with the course id from req.params to retrieve course info
         context.data.getCourse(id)
             .then(res => {
-                setName(res.User.firstName + " " + res.User.lastName)
-                setCourse(res)
-                if (authUser !== null && res.User.emailAddress === authUser.emailAddress) {
-                    setAuthButtons((
-                        <span>
-                            <a className="button" href={`/courses/${id}/update`}>Update Course</a>
-                            <a className="button" href="/" onClick={handleDelete}>Delete Course</a>
-                        </span>
-                    ))
+                if (res.error) {
+                    navigate("/notfound")
+                } else {
+                    setName(res.User.firstName + " " + res.User.lastName)
+                    setCourse(res)
+                    if (authUser !== null && res.User.emailAddress === authUser.emailAddress) {
+                        // Set update and delete buttons if authenticated user is the user that made the course
+                        setAuthButtons((
+                            <span>
+                                <a className="button" href={`/courses/${id}/update`}>Update Course</a>
+                                <a className="button" href="/" onClick={handleDelete}>Delete Course</a>
+                            </span>
+                        ))
+                    }
                 }
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleDelete = function () {
+        // Use the deleteCourse method on Data class with the course id from req.params to delete course from db
         context.data.deleteCourse(id)
             .then(res => {
                 navigate("/")

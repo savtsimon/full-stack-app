@@ -12,9 +12,10 @@ import Forbidden from "./components/Forbidden"
 import UnhandledError from "./components/UnhandledError"
 import Header from "./components/Header"
 import NotFound from "./components/NotFound"
-import withContext from './Context';
+import withContext from "./Context"
 import PrivateRoute from "./PrivateRoute"
 
+// Create routing for rendering components
 function App() {
   return (
     <BrowserRouter>
@@ -31,10 +32,11 @@ function App() {
         <Route path="/signout" element={withContext(UserSignOut)} />
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="/error" element={<UnhandledError />} />
+        <Route path="/notfound" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,5 +1,4 @@
-// import React, { useState, useEffect } from "react"
-import Data from "../Data"
+import React from "react"
 
 let NotFound = function () {
     return (

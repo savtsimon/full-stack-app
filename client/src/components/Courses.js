@@ -5,10 +5,13 @@ let Courses = function (props) {
     const [courses, setCourses] = useState([])
 
     useEffect(() => {
+        // Use the getCourses method on Data class to retrieve info for all courses
+
         props.context.data.getCourses()
             .then(res => {
                 setCourses(res.courses)
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

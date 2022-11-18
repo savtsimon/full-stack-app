@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { Link } from 'react-router-dom';
 
 const UserSignIn = function (props) {
     const { context } = props
@@ -14,14 +13,12 @@ const UserSignIn = function (props) {
     }
     const handleSubmit = function (e) {
         e.preventDefault()
-        // const user = { emailAddress: email.current.value, password: password.current.value }
-        console.log("UserSignIn 19: ", email, password)
+        // Use the signIn method on context to authenticate the user
         context.actions.signIn(email.current.value, password.current.value)
             .then(() => {
                 navigate(-1)
             })
-            .catch((err) => {
-                console.log(err)
+            .catch(() => {
                 navigate('/error')
             })
     }

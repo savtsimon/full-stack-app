@@ -19,13 +19,13 @@ let CreateCourse = function (props) {
     const handleSubmit = function (e) {
         e.preventDefault()
         // Create course
+        // Use the refs in form inputs to build a course object
         const course = { title: title.current.value, description: description.current.value, estimatedTime: estimatedTime.current.value, materialsNeeded: materialsNeeded.current.value }
-        console.log(course)
+        // Use the createCourse method on Data class with the course object to create a new course in db
         context.data.createCourse(course)
             .then(res => {
-                console.log("create course 27", res)
+                // If validation errors are returned, render the errors onto the page
                 if (res.length !== 0) {
-                    console.log("create course 29", res)
                     setValErrors(<div className="validation--errors">
                         <h3>Validation Errors</h3>
                         <ul>
@@ -33,13 +33,12 @@ let CreateCourse = function (props) {
                         </ul>
                     </div>)
                 } else {
-                    navigate('/');
+                    navigate('/')
                 }
             })
             .catch(err => {
-                console.log("CREATE COURSE 39:", err)
                 navigate('/error')
-            });
+            })
     }
     return (
         <main>
@@ -51,7 +50,6 @@ let CreateCourse = function (props) {
                         <div>
                             <label htmlFor="courseTitle">Course Title</label>
                             <input id="courseTitle" name="courseTitle" type="text" ref={title} />
-                            {/* <p>By {authUser.firstName} {authUser.lastName}</p> */}
                             <label htmlFor="courseDescription">Course Description</label>
                             <textarea id="courseDescription" name="courseDescription" ref={description}></textarea>
                         </div>
